@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>Home Page</title>
+  <style>
+    /* Custom CSS for colorful design */
+    body {
+      background-color: #f2f2f2;
+    }
+
+    .navbar {
+      background-color: #343a40;
+    }
+
+    h1 {
+      color: #343a40;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .upload-box {
+      background-color: #ffffff;
+      border: 1px solid #343a40;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 5px;
+    }
+
+    .upload-box-title {
+      color: #343a40;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    /* Styling for share button */
+    .share-button {
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+    }
+
+
+
+    /* Added styles for table columns */
+    table th {
+      color: #ffffff;
+      background-color: #343a40;
+      padding: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    table td {
+      color: #333333;
+      padding: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    }
+
+
+    /* Added styles for alternating row colors */
+    table tbody tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    table tbody tr:nth-child(odd) {
+      background-color: #ffffff;
+    }
+
+    /* Added shadow to rows */
+    table tbody tr {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Upload</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'user_list' %}">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'search' %}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h1>🔍 Search PDF Files</h1>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form action="{% url 'search' %}" method="GET">
+          <div class="input-group">
+            <input type="text" class="form-control" name="search_query" placeholder="Search by name">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Display the table here -->
+    {% if files %}
+    <div class="table-responsive mt-5">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th> <!-- New column for numbering -->
+            <th>Title</th>
+            <th>Uploaded By</th>
+            <th>Uploaded At</th>
+            <th>Share PDF</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for file in files %}
+          <tr>
+            <td>{{ forloop.counter }}</td> <!-- Add this line for numbering -->
+            <td><a href="{% url 'file' file.unique_link %}">{{ file.title }}</a></td>
+            <td>{{ file.uploaded_by.username }}</td>
+            <td>{{ file.uploaded_at }}</td>
+            <td><button class="share-button" onclick="openSharePopup('{{ file.id }}', '{{ file.id }}')">Share</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    </div>
+    {% endif %}
+  </div>
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script>
+    function openSharePopup(fileId, fileUrl) {
+      var width = 400;
+      var height = 300;
+
+      var left = (window.innerWidth / 2) - (width / 2);
+      var top = (window.innerHeight / 2) - (height / 2);
+
+      var shareWindow = window.open('', '_blank', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top);
+
+      var popupContent = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <style>
+                /* CSS styles for the popup content */
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f5f5f5;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+                .popup-content {
+                    text-align: center;
+                }
+                h1 {
+                    color: #333333;
+                }
+                p {
+                    color: #666666;
+                }
+                label {
+                    display: block;
+                    margin-bottom: 10px;
+                }
+                input[type="email"] {
+                    padding: 5px;
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+                button[type="submit"] {
+                    padding: 8px 15px;
+                    background-color: #4CAF50;
+                    color: #ffffff;
+                    border: none;
+                    border-radius: 3px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="popup-content">
+              <form action="http://localhost:8000/api/share/" id="shareForm" method="POST">
+                      {% csrf_token %}
+                      <label for="email">Email:</label>
+                      <input type="hidden" id="file_id" name="file" value="${fileId}"> 
+                      <input type="email" id="email" name="email" required>
+                      <button type="submit">Share</button>
+                  </form>
+            </div>
+        </body>
+        </html>
+      `;
+      var createPopupContent = function (title, message) {
+        return `
+      <html>
+        <head>
+          <style>
+            /* CSS styles for the popup content */
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f5f5f5;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              margin: 0;
+            }
+            .popup-content {
+              text-align: center;
+            }
+            h1 {
+              color: #333333;
+            }
+            p {
+              color: #666666;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="popup-content">
+            <h1>${title}</h1>
+            <p>${message}</p>
+            <button class="done-button" onclick="window.close()">Done</button>
+          </div>
+        </body>
+      </html>
+    `;
+      };
+
+      var successMessage = createPopupContent("🎉 Congratulations! 🎉", "Shared successfully.");
+      var ErrorMessageAlreadyShared = createPopupContent("✅ Already Shared", "Enjoy!!");
+      var ErrorMessage = createPopupContent("Error!", "Try Again");
+      var AccountDoesNotExistErrorMessage = createPopupContent("❌ No Account Found ❌", "Try a different account.");
+
+
+      // Write the content to the popup window
+      shareWindow.document.open();
+      shareWindow.document.write(popupContent);
+      shareWindow.document.close();
+
+      // Handle the form submission within the popup window
+      shareWindow.document.getElementById('shareForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var email = shareWindow.document.getElementById('email').value;
+        console.log(fileId)
+        console.log(email)
+        // Create a new XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Set the request method and URL
+        xhr.open('POST', '/api/share/', false);
+
+        // Set the request headers
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+
+        // Define the callback function for when the request completes
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            // Request was successful
+            var response = JSON.parse(xhr.responseText);
+            // Process the response as needed
+            console.log(response);
+
+            // Show the success message in the popup window
+            shareWindow.document.open();
+            shareWindow.document.write(successMessage);
+            shareWindow.document.close();
+          }
+          else if (xhr.status === 409) {
+            // Request failed
+            console.error('Request failed. Status:', xhr.status);
+            // Show an error message in the popup window
+            shareWindow.document.open();
+            shareWindow.document.write(ErrorMessageAlreadyShared);
+            shareWindow.document.close();
+          } else if (xhr.status === 404) {
+            // Request failed
+            console.error('Request failed. Status:', xhr.status);
+            // Show an error message in the popup window
+            shareWindow.document.open();
+            shareWindow.document.write(AccountDoesNotExistErrorMessage);
+            shareWindow.document.close();
+          }
+          else {
+            // Request failed
+            console.error('Request failed. Status:', xhr.status);
+            // Show an error message in the popup window
+            shareWindow.document.open();
+            shareWindow.document.write(ErrorMessage);
+            shareWindow.document.close();
+          }
+        };
+
+        var data = "email=" + encodeURIComponent(email) + "&file=" + encodeURIComponent(fileId);
+
+        // Send the request
+        xhr.send(data);
+
+      });
+    }
+
+    
+
+  // shareWindow.document.getElementById('shareButton').addEventListener('click', openSharePopup);
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery.fancytable/dist/fancyTable.min.js"></script>
+  <script type="text/javascript">
+    
+    $(document).ready(function() {
+      $(".table-bordered").fancyTable({
+      pagination: true,
+      perPage:8,
+      searchable: false
+      });
+            
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load static %}   
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      
+        <title>Home Page</title>
+        <style>
+          /* Custom CSS for colorful design */
+          body {
+            background-color: #f2f2f2;
+          }
+      
+          .navbar {
+            background-color: #343a40;
+          }
+      
+          h1 {
+            color: #343a40;
+            text-align: center;
+            margin-top: 50px;
+          }
+      
+          .upload-box {
+            background-color: #ffffff;
+            border: 1px solid #343a40;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 5px;
+          }
+      
+          .upload-box-title {
+            color: #343a40;
+            font-weight: bold;
+            margin-bottom: 15px;
+          }
+        </style>
+        <link rel="stylesheet" href="{% static 'Uploader/style.css' %}">
+      </head>
+      
+      <body>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+          <a class="navbar-brand" href="#">Home</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Upload</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'user_list' %}">Users</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'search' %}">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+    <div class="container">
+        <div class="header-section">
+            <h1>📘 Upload Files 📘</h1>
+            <p>Upload files you want to share with your team members.</p>
+            <p>⚠️ Only PDFs are allowed</p>
+        </div>
+        <div class="drop-section">
+            <div class="col">
+                <div class="cloud-icon">
+                    <img src="{% static 'Uploader/icons/cloud.png' %}" alt="cloud">
+                </div>
+                <span>Drag & Drop your files here</span>
+                <span>OR</span>
+                <button class="file-selector">Browse Files</button>
+                <input type="file" class="file-selector-input" accept="application/pdf" multiple>
+            </div>
+            <div class="col">
+                <div class="drop-here">Drop Here</div>
+            </div>
+        </div>
+        <div class="list-section">
+            <div class="list-title">Uploaded Files</div>
+            <div class="list"></div>
+        </div>
+    </div>
+<script src="{% static 'Uploader/script.js' %}"></script>
+</body>
+</html>

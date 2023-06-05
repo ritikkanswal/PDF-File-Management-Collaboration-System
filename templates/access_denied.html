@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Design by foolishdeveloper.com -->
+  <title>Access Denied</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <!--Stylesheet-->
+  <style media="screen">
+
+    body {
+      background-color: #f2f2f2;
+    }
+    .navbar {
+      background-color: #343a40;
+    }
+    h1 {
+      color: #343a40;
+      text-align: center;
+      margin-top: 50px;
+    }
+    
+    /* Access Denied Styles */
+    .access-denied-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 70vh;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f2f2f2;
+    }
+    
+    .access-denied-title {
+      font-size: 32px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: #007bff;
+    }
+    
+    .access-denied-message {
+      font-size: 18px;
+      font-weight: 300;
+      color: #343a40;
+      text-align: center;
+    }
+    
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Upload</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'user_list' %}">Users</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'search' %}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+ <div class="access-denied-container">
+  <h1 class="access-denied-title">🚫 Access Denied 🚫</h1>
+  <p class="access-denied-message">Oops! Sorry, it seems like the PDF file you are trying to access is not shared with you 😔</p>
+  <p class="access-denied-message">Please contact the owner of this file for assistance or try again later.</p>
+</div>
+
+
+</body>
+
+</html>

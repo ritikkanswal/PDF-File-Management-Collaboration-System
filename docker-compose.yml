@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - spotdraft
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    command: --bind-address=0.0.0.0
+
+  backend:
+    image: pdf_management_collaboration_system:latest
+    environment: 
+      - PYTHONUNBUFFERED=1
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - db
+    expose:
+      - '8000'
+    ports:
+      - "8000:8000"
+    networks:
+      - spotdraft
+    command: >
+      sh -c "
+        gunicorn --workers 4 pdf_management_collaboration_system.wsgi:application -b 0.0.0.0:8000 --log-level debug --timeout 0
+      "
+volumes:
+  mysql_data:
+
+networks:
+  spotdraft:
