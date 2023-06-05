@@ -86,23 +86,30 @@ WSGI_APPLICATION = 'pdf_management_collaboration_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
-     'default': {
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'spotdraft',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': 'password#@qQ1tv',
-        'CONN_MAX_AGE': 120,
-    }
-
     # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+    #     'ENGINE': 'mysql.connector.django',
+    #     'NAME': 'spotdraft',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    #     'USER': 'root',
+    #     'PASSWORD': 'password#@qQ1tv',
+    #     'CONN_MAX_AGE': 120,
+    # },
+    'default': {
+          'ENGINE': 'mysql.connector.django',
+          'NAME': os.environ.get('MYSQL_DATABASE'),
+          'USER': os.environ.get('MYSQL_USER'),
+          'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD'),
+          'HOST': os.environ.get('MYSQL_DATABASE_HOST'),
+          'PORT': os.environ.get('MYSQL_DATABASE_PORT'),
+          'CONN_MAX_AGE': 120,
+          'OPTIONS': {
+            'auth_plugin': 'mysql_native_password'
+          }
+    }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
