@@ -47,7 +47,7 @@ To install and run the PDF Management & Collaboration System, follow these steps
 5. Start the application using Docker Compose with the following command: ```sudo docker-compose up --build -d ```
 6. Access the application in your web browser at ```http://localhost:8000```
 
-## Databse Design
+## Database Design
 
 ![Screenshot 1](screenshots/design.png)
 
