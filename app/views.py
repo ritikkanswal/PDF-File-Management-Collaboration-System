@@ -27,6 +27,7 @@ class SearchView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['files'] = PDFFile.objects.all()
         return context
+
 @login_required(login_url='login')
 def user_list(request):
     try:
@@ -97,6 +98,7 @@ def search_files(request):
         
         files1=None
         files2=None
+        
         if(search_query==None):
             files1 = PDFFile.objects.filter(Q(uploaded_by_id=user.id))
             files2 = PDFFile.objects.filter(Q(id__in=ids))

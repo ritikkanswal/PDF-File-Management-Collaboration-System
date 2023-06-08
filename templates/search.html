@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% load static %}
+{% load custom_filters %}
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -10,7 +13,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-  <title>Home Page</title>
+  <title>Dashboard</title>
   <style>
     /* Custom CSS for colorful design */
     body {
@@ -145,7 +148,7 @@
             <td><a href="{% url 'file' file.unique_link %}">{{ file.title }}</a></td>
             <td>{{ file.uploaded_by.username }}</td>
             <td>{{ file.uploaded_at }}</td>
-            <td><button class="share-button" onclick="openSharePopup('{{ file.id }}', '{{ file.id }}')">Share</button>
+            <td><button class="share-button" onclick="openSharePopup('{{ file.id }}', '{{ file.unique_link|generate_link }}')">Share</button>
             </td>
           </tr>
           {% endfor %}
@@ -171,6 +174,7 @@
     crossorigin="anonymous"></script>
   <script>
     function openSharePopup(fileId, fileUrl) {
+      // console.log(fileUrl)
       var width = 400;
       var height = 300;
 
@@ -236,7 +240,7 @@
         </body>
         </html>
       `;
-      var createPopupContent = function (title, message) {
+      var createPopupContent = function (title, message,fileUrl='') {
         return `
       <html>
         <head>
@@ -266,6 +270,9 @@
           <div class="popup-content">
             <h1>${title}</h1>
             <p>${message}</p>
+            <small><a href="${fileUrl}" target="_blank">${fileUrl}</a></small>
+            <br>
+            <br>
             <button class="done-button" onclick="window.close()">Done</button>
           </div>
         </body>
@@ -273,8 +280,8 @@
     `;
       };
 
-      var successMessage = createPopupContent("🎉 Congratulations! 🎉", "Shared successfully.");
-      var ErrorMessageAlreadyShared = createPopupContent("✅ Already Shared", "Enjoy!!");
+      var successMessage = createPopupContent("🎉 Congratulations! 🎉", "Shared successfully.",fileUrl);
+      var ErrorMessageAlreadyShared = createPopupContent("✅ Already Shared", "Enjoy!!",fileUrl);
       var ErrorMessage = createPopupContent("Error!", "Try Again");
       var AccountDoesNotExistErrorMessage = createPopupContent("❌ No Account Found ❌", "Try a different account.");
 

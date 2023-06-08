@@ -4,13 +4,23 @@ from django import template
 from django.conf import settings
 import boto3
 import hashlib
-
+from dotenv import load_dotenv
+import os
+# Load environment variables from .env file
+load_dotenv()
 
 register = template.Library()
 
 @register.filter
 def md5_hash(email):
     return hashlib.md5(email.encode()).hexdigest()
+
+
+@register.filter
+def generate_link(uuid):
+    HOST_IP_OR_DOMAIN = os.environ.get('HOST_IP_OR_DOMAIN')
+    link = "http://"+HOST_IP_OR_DOMAIN+"/file/"+str(uuid)
+    return link
 
 
 
